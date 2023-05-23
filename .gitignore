@@ -72,7 +72,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 Packages/
-Packages/packages-lock.json
 UserSettings/
 ProjectSettings/
 .idea/
