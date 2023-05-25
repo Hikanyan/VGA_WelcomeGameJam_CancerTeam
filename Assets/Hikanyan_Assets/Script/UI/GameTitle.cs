@@ -8,5 +8,6 @@ public class GameTitle : MonoBehaviour
     void Start()
     {
         SceneChanger.Instance.LoadAndFadeOut("TitleScene");
+        GameProgressManager.Instance._gameState.Value = GameState.Title;
     }
 }
