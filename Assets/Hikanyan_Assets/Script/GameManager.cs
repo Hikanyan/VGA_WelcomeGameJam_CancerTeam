@@ -4,17 +4,17 @@ using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
 public enum GameState
-    {
-        Title,
-        GameStart,
-        GameEnd,
-        Result,
-        Explanation,
-        None
-    }
+{
+    Title,
+    GameStart,
+    GameEnd,
+    Result,
+    Explanation,
+    None
+}
 public class GameManager : AbstractSingleton<GameManager>
 {
-    
+    GameState _gameState = GameState.None;
 
     private ScoreManager scoreManager;
     private TimerManager timerManager;
