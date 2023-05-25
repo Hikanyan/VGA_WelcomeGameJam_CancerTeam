@@ -23,9 +23,10 @@ public class SceneChanger : AbstractSingleton<SceneChanger>
         var state = GameState.None;
         switch(sceneName)
         {
-            case "Title": state = GameState.Title; break;
-            case "Game": state = GameState.GameStart; break;
-            case "Result": state = GameState.Result;break;
+            case "Boot":state = GameState.None; break;
+            case "TitleScene": state = GameState.Title; break;
+            case "GameScene": state = GameState.GameStart; break;
+            case "ResultScene": state = GameState.Result;break;
         }
         var panelImage = _fadePanel.GetComponent<Image>();
         panelImage.color = new Color(0, 0, 0, 0);

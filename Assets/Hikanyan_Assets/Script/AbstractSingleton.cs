@@ -1,52 +1,39 @@
 using System;
 using UnityEngine;
 
-
 public abstract class AbstractSingleton<T> : MonoBehaviour where T : Component
 {
-    /// <summary>
-    /// static Singleton instance
-    /// </summary>
-    static T _Instance;
+    private static T _instance;
 
     public static T Instance
     {
         get
         {
-            if (_Instance == null)
+            if (_instance == null)
             {
-                Type t = typeof(T);
-                _Instance = (T)FindObjectOfType(t);
-                if (_Instance != null)
+                _instance = FindObjectOfType<T>();
+                if (_instance == null)
                 {
-                    Debug.LogError($"{t}をアタッチしているGameObjectがありません。");
-                    GameObject obj = new GameObject();
-                    obj.name = t.Name;
-                    _Instance = obj.AddComponent<T>();
-                    Debug.LogError($"{t}をアタッチしているGameObject {obj.name} を作成しました。");
+                    GameObject singletonObject = new GameObject();
+                    _instance = singletonObject.AddComponent<T>();
+                    singletonObject.name = typeof(T).ToString();
+                    DontDestroyOnLoad(singletonObject);
                 }
             }
-            return _Instance;
+            return _instance;
         }
     }
+
     protected virtual void Awake()
     {
-        ChackIn();
-        OnAwake();
-    }
-    protected void ChackIn()
-    {
-        if (_Instance == null)
+        if (_instance == null)
         {
-            _Instance = this as T;
+            _instance = this as T;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
     }
-    /// <summary>
-    /// 継承先でAwakeが必要な場合
-    /// </summary>
-    protected virtual void OnAwake() { }
 }

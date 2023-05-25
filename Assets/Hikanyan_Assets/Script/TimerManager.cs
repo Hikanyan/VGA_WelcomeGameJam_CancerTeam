@@ -1,9 +1,11 @@
 using UniRx;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+
 public class TimerManager
 {
     private FloatReactiveProperty _timer = new FloatReactiveProperty(0f);
+    private CompositeDisposable _disposable = new CompositeDisposable();
 
     public IReadOnlyReactiveProperty<float> Timer => _timer;
 
@@ -23,5 +25,10 @@ public class TimerManager
     public void ResetTimer()
     {
         _timer.Value = 0f;
+    }
+
+    public void StopTimer()
+    {
+        _disposable.Clear();
     }
 }
