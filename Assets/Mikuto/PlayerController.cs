@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour, IDamageable
 {
     [SerializeField] int m_maxHp = 100;
-    int m_hp;
+    public int m_hp;
     [SerializeField] float m_speed = 1f;
     [SerializeField] float m_maxSpeed = 10f;
     [SerializeField] float m_jumpPower = 1f;
