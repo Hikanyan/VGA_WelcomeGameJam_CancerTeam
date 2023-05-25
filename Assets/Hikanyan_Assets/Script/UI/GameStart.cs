@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameStart : MonoBehaviour
@@ -13,6 +14,7 @@ public class GameStart : MonoBehaviour
     }
     void StartGame()
     {
-        GameManager.Instance._gameState = GameState.GameStart;
+        SceneManager.LoadScene("GameScene");
+        GameProgressManager.Instance._gameState.Value = GameState.GameStart;
     }
 }

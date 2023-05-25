@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
-
+using System;
 public class GameProgressManager : AbstractSingleton<GameProgressManager>
 {
-    private readonly ReactiveProperty<GameState> _gameState = new ReactiveProperty<GameState>();
+    public ReactiveProperty<GameState> _gameState = new ReactiveProperty<GameState>();
     [SerializeField] AudioClip _audioClipTitle;
     [SerializeField] AudioClip _audioClipInGame;
     [SerializeField] AudioClip _audioClipResult;
@@ -13,6 +13,7 @@ public class GameProgressManager : AbstractSingleton<GameProgressManager>
     private void Start()
     {
         _gameState.Subscribe(OnGameStateChange);
+        _gameState.Value = GameState.None;
     }
     public void OnGameStateChange(GameState state)
     {

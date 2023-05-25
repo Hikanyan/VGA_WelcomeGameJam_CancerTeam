@@ -31,7 +31,7 @@ public class SceneChanger : AbstractSingleton<SceneChanger>
         var panelImage = _fadePanel.GetComponent<Image>();
         panelImage.color = new Color(0, 0, 0, 0);
         _fadePanel.SetActive(true);
-        panelImage.DOFade(1.0f, _fadeDuration).OnComplete(() => GameManager.Instance._gameState = state)
+        panelImage.DOFade(1.0f, _fadeDuration).OnComplete(() => GameProgressManager.Instance._gameState.Value = state)
             .OnComplete(() => SceneManager.LoadScene(sceneName));
     }
 }
