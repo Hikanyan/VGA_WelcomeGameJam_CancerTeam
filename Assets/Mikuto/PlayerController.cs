@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float m_speed = 1f;
     [SerializeField] float m_jumpPower = 1f;
+    [SerializeField] AudioSource m_audioSource = default;
     Rigidbody2D m_rb = default;
     float m_horizontal;
     bool isGrounded = false;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && (isGrounded || isJumping))
         {
             m_rb.AddForce(Vector2.up * m_jumpPower, ForceMode2D.Impulse);
+            m_audioSource.Play();
             if (isJumping)
             {
                 isJumping = false;
