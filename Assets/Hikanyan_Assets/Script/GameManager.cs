@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
-
-public class GameManager : AbstractSingleton<GameManager>
-{
-    enum GameState
+public enum GameState
     {
         Title,
-        InGame,
+        GameStart,
+        GameEnd,
         Result,
-        Explanation
+        Explanation,
+        None
     }
+public class GameManager : AbstractSingleton<GameManager>
+{
+    
 
     private ScoreManager scoreManager;
     private TimerManager timerManager;
