@@ -106,15 +106,25 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isGrounded = true;
-        m_animator.SetBool("jump", false);
+        if (collision.gameObject.tag == "Ground")
+        {
+            isGrounded = true;
+            m_animator.SetBool("jump", false);
+        }
+        if(collision.gameObject.tag == "Enemy" && m_animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        {
+            Debug.Log("ìGÇçUåÇ");
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        isGrounded = false;
-        isJumping = true;
-        m_animator.SetBool("jump", true);
+        if (collision.gameObject.tag == "Ground")
+        {
+            isGrounded = false;
+            isJumping = true;
+            m_animator.SetBool("jump", true);
+        }
     }
 }
 
