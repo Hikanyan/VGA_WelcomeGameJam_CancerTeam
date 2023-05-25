@@ -284,10 +284,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_maxHp: 100
   m_speed: 10
-  m_maxSpeed: 10
+  m_maxSpeed: 5
   m_jumpPower: 15
   m_audioClip: {fileID: 8300000, guid: 328b279eaa509624a84860ca76c0303b, type: 3}
-  m_animation: {fileID: 0}
 --- !u!50 &536974613
 Rigidbody2D:
   serializedVersion: 4
