@@ -7,7 +7,8 @@ public enum GameState
 {
     Title,
     GameStart,
-    GameEnd,
+    GameClear,
+    GameOver,
     Result,
     Explanation,
     None
@@ -23,6 +24,7 @@ public class GameManager : AbstractSingleton<GameManager>
     {
         scoreManager = new ScoreManager();
         timerManager = new TimerManager();
+        _gameState  = GameState.None;
     }
 
     public void AddScore(int points)
@@ -38,6 +40,10 @@ public class GameManager : AbstractSingleton<GameManager>
     public async UniTask StartTimer(float duration)
     {
         await timerManager.StartTimer(duration);
+    }
+    public void StopTimer()
+    {
+        timerManager.StopTimer();
     }
 
     public void ResetTimer()

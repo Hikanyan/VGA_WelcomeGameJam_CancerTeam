@@ -9,29 +9,46 @@ public class GameProgressManager : AbstractSingleton<GameProgressManager>
     [SerializeField] AudioClip _audioClipTitle;
     [SerializeField] AudioClip _audioClipInGame;
     [SerializeField] AudioClip _audioClipResult;
+    [SerializeField] float _startTimer = 100f;
     private void Start()
     {
         _gameState.Subscribe(OnGameStateChange);
     }
     public void OnGameStateChange(GameState state)
     {
+        Debug.Log(state);
         switch (state)
         {
             case GameState.Title:
                 // タイトル画面の処理
+                SceneChanger.Instance.LoadAndFadeOut("TitleScene");
                 AudioManager.Instance.PlayMusic(_audioClipTitle);
-
                 break;
             case GameState.GameStart:
                 // ゲーム開始の処理
+                SceneChanger.Instance.LoadAndFadeOut("GameScene");
+                GameManager.Instance.StartTimer(_startTimer);
+                GameManager.Instance.ResetScore();
                 AudioManager.Instance.PlayMusic(_audioClipInGame);
+                
                 break;
-            case GameState.GameEnd:
-                // ゲーム終了の処理
+            case GameState.GameClear:
+                // ゲームクリアの処理
+                GameManager.Instance.StopTimer();
+                //クリア演出
+                SceneChanger.Instance.LoadAndFadeOut("ResultScene");
+                break;
+            case GameState.GameOver:
+                // ゲームオーバーの処理
+                GameManager.Instance.StopTimer();
+                //ガメオベラ
+                SceneChanger.Instance.LoadAndFadeOut("ResultScene");
                 break;
             case GameState.Result:
                 // 結果表示の処理
                 AudioManager.Instance.PlayMusic(_audioClipResult);
+
+                //シーンチェンジ
                 break;
             case GameState.Explanation:
                 // ゲーム説明の処理
@@ -47,10 +64,5 @@ public class GameProgressManager : AbstractSingleton<GameProgressManager>
     public void ChangeGameState(GameState state)
     {
         _gameState.Value = state;
-    }
-    public void StartGame(float gameDuration)
-    {
-        GameManager.Instance.ResetScore();
-        GameManager.Instance.StartTimer(gameDuration);
     }
 }
