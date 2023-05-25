@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float m_maxSpeed = 10f;
     [SerializeField] float m_jumpPower = 1f;
     [SerializeField] AudioClip m_audioClip = default;
+    CapsuleCollider2D m_capsuleCollider2D = default;
+    CircleCollider2D m_circleCollider2D = default;
+    BoxCollider2D m_boxCollider2D = default;
     Rigidbody2D m_rb = default;
     Animator m_animator;
     SpriteRenderer m_spriteRenderer;
@@ -35,6 +38,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         m_rb = GetComponent<Rigidbody2D>();
         m_animator = GetComponent<Animator>();
         m_spriteRenderer = GetComponent<SpriteRenderer>();
+        m_capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+        m_circleCollider2D = GetComponent<CircleCollider2D>();
+        m_boxCollider2D = GetComponent<BoxCollider2D>();
+        
         Hp = m_maxHp;
     }
     public void Damage(int value)
@@ -51,15 +58,30 @@ public class PlayerController : MonoBehaviour, IDamageable
         m_horizontal = Input.GetAxisRaw("Horizontal");
         float speedX = Mathf.Abs(this.m_rb.velocity.x);
 
-        if(m_horizontal != 0)
+        if(Input.GetButtonDown("Fire1"))//çUåÇéËíi
+        {
+            m_animator.SetBool("attack", true);
+        }
+        else
+        {
+            m_animator.SetBool("attack", false);
+        }
+
+        if(m_horizontal != 0)//â°à⁄ìÆ
         {
             m_animator.SetBool("run", true);
             if(m_horizontal < 0)
             {
+                m_boxCollider2D.offset = new Vector2(-0.05f, 0);
+                m_circleCollider2D.offset = new Vector2(0.1f, -0.21f);
+                m_capsuleCollider2D.offset = new Vector2(0.1f, 0);
                 m_spriteRenderer.flipX = true;
             }
             else
             {
+                m_boxCollider2D.offset = new Vector2(0.05f, 0);
+                m_circleCollider2D.offset = new Vector2(-0.1f, -0.21f);
+                m_capsuleCollider2D.offset = new Vector2(-0.1f, 0);
                 m_spriteRenderer.flipX = false;
             }
             if (speedX <= m_maxSpeed)
@@ -72,7 +94,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             m_animator.SetBool("run", false);
         }
 
-        if (Input.GetButtonDown("Jump") && (isGrounded || isJumping))
+        if (Input.GetButtonDown("Jump") && (isGrounded || isJumping))//ÉWÉÉÉìÉvèàóù
         {
             m_rb.AddForce(Vector2.up * m_jumpPower, ForceMode2D.Impulse);
             AudioManager.Instance.PlaySoundEffect(m_audioClip);
@@ -82,7 +104,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
         }
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         isGrounded = true;
