@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] int m_maxHp = 100;
     int m_hp;
     [SerializeField] float m_speed = 1f;
+    [SerializeField] float m_maxSpeed = 10f;
     [SerializeField] float m_jumpPower = 1f;
     [SerializeField] AudioSource m_audioSource = default;
     Rigidbody2D m_rb = default;
@@ -44,7 +45,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Update()
     {
         m_horizontal = Input.GetAxisRaw("Horizontal");
-        m_rb.AddForce(Vector2.right * m_horizontal * m_speed, ForceMode2D.Force);
+        float speedX = Mathf.Abs(this.m_rb.velocity.x);
+
+        if(speedX <= m_maxSpeed)
+        {
+            m_rb.AddForce(Vector2.right * m_horizontal * m_speed, ForceMode2D.Force);
+        }
 
         if (Input.GetButtonDown("Jump") && (isGrounded || isJumping))
         {
