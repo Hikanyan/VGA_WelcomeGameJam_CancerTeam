@@ -9,8 +9,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float m_speed = 1f;
     [SerializeField] float m_maxSpeed = 10f;
     [SerializeField] float m_jumpPower = 1f;
-    [SerializeField] AudioSource m_audioSource = default;
+    [SerializeField] AudioClip m_audioClip = default;
     Rigidbody2D m_rb = default;
+    Animator m_animator;
+    SpriteRenderer m_spriteRenderer;
     float m_horizontal;
     bool isGrounded = false;
     bool isJumping = false;
@@ -31,6 +33,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
+        m_animator = GetComponent<Animator>();
+        m_spriteRenderer = GetComponent<SpriteRenderer>();
         Hp = m_maxHp;
     }
     public void Damage(int value)
@@ -47,15 +51,31 @@ public class PlayerController : MonoBehaviour, IDamageable
         m_horizontal = Input.GetAxisRaw("Horizontal");
         float speedX = Mathf.Abs(this.m_rb.velocity.x);
 
-        if(speedX <= m_maxSpeed)
+        if(m_horizontal != 0)
         {
-            m_rb.AddForce(Vector2.right * m_horizontal * m_speed, ForceMode2D.Force);
+            m_animator.SetBool("run", true);
+            if(m_horizontal < 0)
+            {
+                m_spriteRenderer.flipX = true;
+            }
+            else
+            {
+                m_spriteRenderer.flipX = false;
+            }
+            if (speedX <= m_maxSpeed)
+            {
+                m_rb.AddForce(Vector2.right * m_horizontal * m_speed, ForceMode2D.Force);
+            }
+        }
+        else
+        {
+            m_animator.SetBool("run", false);
         }
 
         if (Input.GetButtonDown("Jump") && (isGrounded || isJumping))
         {
             m_rb.AddForce(Vector2.up * m_jumpPower, ForceMode2D.Impulse);
-            m_audioSource.Play();
+            AudioManager.Instance.PlaySoundEffect(m_audioClip);
             if (isJumping)
             {
                 isJumping = false;
@@ -66,12 +86,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void OnTriggerEnter2D(Collider2D collision)
     {
         isGrounded = true;
+        m_animator.SetBool("jump", false);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         isGrounded = false;
         isJumping = true;
+        m_animator.SetBool("jump", true);
     }
 }
 
