@@ -6,7 +6,9 @@ using UniRx;
 public class GameProgressManager : AbstractSingleton<GameProgressManager>
 {
     private readonly ReactiveProperty<GameState> _gameState = new ReactiveProperty<GameState>();
-
+    [SerializeField] AudioClip _audioClipTitle;
+    [SerializeField] AudioClip _audioClipInGame;
+    [SerializeField] AudioClip _audioClipResult;
     private void Start()
     {
         _gameState.Subscribe(OnGameStateChange);
@@ -17,15 +19,19 @@ public class GameProgressManager : AbstractSingleton<GameProgressManager>
         {
             case GameState.Title:
                 // タイトル画面の処理
+                AudioManager.Instance.PlayMusic(_audioClipTitle);
+
                 break;
             case GameState.GameStart:
                 // ゲーム開始の処理
+                AudioManager.Instance.PlayMusic(_audioClipInGame);
                 break;
             case GameState.GameEnd:
                 // ゲーム終了の処理
                 break;
             case GameState.Result:
                 // 結果表示の処理
+                AudioManager.Instance.PlayMusic(_audioClipResult);
                 break;
             case GameState.Explanation:
                 // ゲーム説明の処理
