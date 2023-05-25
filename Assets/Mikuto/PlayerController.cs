@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
+    [SerializeField] int m_maxHp = 100;
+    int m_hp;
     [SerializeField] float m_speed = 1f;
     [SerializeField] float m_jumpPower = 1f;
     [SerializeField] AudioSource m_audioSource = default;
@@ -11,9 +13,32 @@ public class PlayerController : MonoBehaviour
     float m_horizontal;
     bool isGrounded = false;
     bool isJumping = false;
+
+    public int Hp
+    {
+        get { return m_hp; }
+        set
+        {
+            m_hp = Mathf.Clamp(value, 0, m_maxHp);
+
+            if (m_hp <= 0)
+            {
+                Death();
+            }
+        }
+    }
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
+        Hp = m_maxHp;
+    }
+    public void Damage(int value)
+    {
+        Hp -= value;
+    }
+    public void Death()
+    {
+        Destroy(gameObject);
     }
 
     void Update()
@@ -42,4 +67,10 @@ public class PlayerController : MonoBehaviour
         isGrounded = false;
         isJumping = true;
     }
+}
+
+public interface IDamageable
+{
+    public void Damage(int value);
+    public void Death();
 }
