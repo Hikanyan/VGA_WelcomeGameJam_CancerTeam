@@ -21,12 +21,10 @@ public class GameProgressManager : AbstractSingleton<GameProgressManager>
         {
             case GameState.Title:
                 // タイトル画面の処理
-                SceneChanger.Instance.LoadAndFadeOut("TitleScene");
                 AudioManager.Instance.PlayMusic(_audioClipTitle);
                 break;
             case GameState.GameStart:
                 // ゲーム開始の処理
-                SceneChanger.Instance.LoadAndFadeOut("GameScene");
                 GameManager.Instance.StartTimer(_startTimer);
                 GameManager.Instance.ResetScore();
                 AudioManager.Instance.PlayMusic(_audioClipInGame);
@@ -36,13 +34,11 @@ public class GameProgressManager : AbstractSingleton<GameProgressManager>
                 // ゲームクリアの処理
                 GameManager.Instance.StopTimer();
                 //クリア演出
-                SceneChanger.Instance.LoadAndFadeOut("ResultScene");
                 break;
             case GameState.GameOver:
                 // ゲームオーバーの処理
                 GameManager.Instance.StopTimer();
                 //ガメオベラ
-                SceneChanger.Instance.LoadAndFadeOut("ResultScene");
                 break;
             case GameState.Result:
                 // 結果表示の処理

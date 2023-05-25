@@ -3,16 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
-public enum GameState
-{
-    Title,
-    GameStart,
-    GameClear,
-    GameOver,
-    Result,
-    Explanation,
-    None
-}
+
 public class GameManager : AbstractSingleton<GameManager>
 {
     public GameState _gameState = GameState.None;
