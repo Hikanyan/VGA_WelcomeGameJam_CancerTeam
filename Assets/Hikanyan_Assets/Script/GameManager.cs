@@ -14,7 +14,7 @@ public enum GameState
 }
 public class GameManager : AbstractSingleton<GameManager>
 {
-    GameState _gameState = GameState.None;
+    public GameState _gameState = GameState.None;
 
     private ScoreManager scoreManager;
     private TimerManager timerManager;
